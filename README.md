@@ -1,8 +1,6 @@
 # ScopedEnum
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/scoped_enum`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Group multiple enum values backed by ActiveRecord::Enum into scopes with ScopedEnum.
 
 ## Installation
 
@@ -22,18 +20,31 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+In your ActiveRecord model:
 
-## Development
+```ruby
+class User < ActiveRecord::Base
+    scoped_enum :role, { normal: 0, administrator: 1, superuser: 2 }, manager: [:administrator, :superuser]
+end
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
+It creates three things:
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-1. Fork it ( https://github.com/[my-github-username]/scoped_enum/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+1. An ActiveRecord scope with the same name as the enum scope.
+```ruby
+User.create(name: 'normal', role: :normal)
+User.create(name: 'administrator', role: :administrator)
+User.create(name: 'superuser', role: :superuser)
+User.managers #=> [<User: 'administrator'>, <User: 'superuser'>]
+```
+2. A class method to return all scopes of an enum.
+```ruby
+User.role_scopes #=> { manager: { administrator: 1, superuser: 2 } }
+```
+3. An instance method to check if a record belongs to the scope.
+```ruby
+u = User.new(role: :normal)
+u.manager? #=> false
+u.role = :superuser
+u.manager? #=> true
+```
