@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
 end
 ```
 
-It creates three things:
+Besides stuffs created by a normal enum call, it creates three more things:
 
 1. An ActiveRecord scope with the same name as the enum scope.
 ```ruby
