@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    scoped_enum (0.1.0)
+    scoped_enum (0.2.1)
+      activerecord (~> 4.1, >= 4.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -72,11 +73,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord (~> 4.1.0)
-  activesupport
+  activerecord (~> 4.1, >= 4.1.0)
   bundler (~> 1.8)
   factory_girl_rails (~> 4.0)
   rake (~> 10.0)
-  rspec
+  rspec (~> 3.2)
   scoped_enum!
-  sqlite3
+  sqlite3 (~> 1.3, >= 1.3.10)

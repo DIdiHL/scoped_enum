@@ -1,7 +1,10 @@
 class User < ActiveRecord::Base
   scoped_enum :role,
-              { normal: 0, administrator: 1, superuser: 2 },
-              { manager: [:administrator, :superuser] }
+              [:normal, :administrator, :superuser],
+              { manager: [:administrator, :superuser] } do |e|
+    e.scope :non_admin, [:normal, :superuser]
+  end
+
   def self.non_superusers
   end
 
