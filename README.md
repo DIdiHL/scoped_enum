@@ -28,7 +28,17 @@ class User < ActiveRecord::Base
 end
 ```
 
-Besides stuffs created by a normal enum call, it creates three more things:
+Or you can pass in a block to create the enum scopes
+
+```ruby
+class User < ActiveRecord::Base
+    scoped_enum :role, { normal: 0, administrator: 1, superuser: 2 } do |e|
+        e.scope :manager, [:administrator, :superuser]
+    end
+end
+```
+
+Besides stuffs created by a normal `enum` call, it creates three more things:
 
 1. An ActiveRecord scope with the same name as the enum scope.
 ```ruby
